@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 00:14:34 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/14 01:15:56 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 05:09:55 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ void	display_data_vec(t_win *win, char *name, t_vec2 data, int y)
 	mlx_string_put(win->mlx, win->win, 
 			170, y, 0xFFFFFF, (tmp = ft_itoa(rint(data.y))));
 	free(tmp);
+}
+
+void	display_data_str(t_win *win, char *name, char *data, int y)
+{
+	mlx_string_put(win->mlx, win->win, 10, y, 0xFFFFFF, name);
+	mlx_string_put(win->mlx, win->win, 100, y, 0xFFFFFF, data);
 }
 
 void	paint_window(t_win *win)

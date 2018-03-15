@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 01:04:15 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/13 23:32:47 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/14 03:40:09 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int		key_press_hook(int keyCode, void *parm)
 	p = (t_ptr*)parm;
 	if (keyCode == 53)
 		exit(0);
+	else if (keyCode == 35)
+		p->is_perspective_active = !p->is_perspective_active;
 	else
 	{
 		//printf("Key pressed : %03d\n", keyCode);

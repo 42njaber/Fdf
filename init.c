@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/14 01:21:08 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 05:21:03 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,25 @@ void			init_map(int fd, t_ptr *p)
 {
 	get_map(fd, p->map);
 	p->rot = (t_vec2){0, 0};
-	p->dest_rot = (t_vec2){80, 45};
+	p->dest_rot = (t_vec2){50, 45};
 	p->z_size = 0.3;
-	p->zoom = 50;
-	p->dest_zoom = 5;
+	p->zoom = 5;
+	p->dest_zoom = 2;
 	p->button = -1;
 	p->pos = (t_vec2){0,0};
 	p->dest_pos = (t_vec2){0,0};
-	p->far = 0.1;
-	p->near = 100;
+	p->near = 0.01;
+	p->far = 100;
 	p->fov = 90;
+	p->is_perspective_active = 1;
+	ft_memcpy(p->colors, (unsigned int[5]){0x444444, 0xDDDDDD,
+			0xFFFF00, 0xFF7700, 0xFF0000}, sizeof(unsigned int[5]));
 	ft_bzero(p->keys, 256);
 }
 
 void			set_hooks(t_ptr *p)
 {
+	ft_printf("test2\n");
 	mlx_loop_hook(p->win->mlx, loop_hook, (void*)p);
 	mlx_hook(p->win->win, MotionNotify, 0, motion_hook, (void*)p);
 	mlx_hook(p->win->win, ButtonPress, 0, button_press_hook, (void*)p);

@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 10:10:08 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/13 00:11:54 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 05:16:04 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	combine_samples(t_img *img)
 	}
 }
 
-void	img_px(t_img *img, int color, t_ivec pixel, int sample)
+void	img_px(t_img *img, unsigned int color, t_ivec pixel, int sample)
 {
 	int		px_bytes;
 

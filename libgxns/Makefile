@@ -3,6 +3,8 @@ SRC = draw_fig.c \
 	  images.c \
 	  matrix.c \
 	  matrix2.c \
+	  colors.c \
+	  init_opencl.c \
 	  gnl/get_next_line.c
 
 NAME = libgxns.a

@@ -1,5 +1,6 @@
 SRC = init.c \
 	  main.c \
+	  display.c \
 	  key_hooks.c \
 	  key_handler.c \
 	  mouse_hooks.c \
@@ -12,7 +13,7 @@ FLAGS = -Wall -Wextra -Werror
 OBJ = $(SRC:.c=.o)
 
 LIB = libgxns/libgxns.a
-CFLAGS = -Llibgxns -lgxns -framework OpenGL -framework AppKit
+CFLAGS = -Llibgxns -lgxns -framework OpenGL -framework AppKit -framework OpenCL
 CC = gcc
 RM = @rm -fv
 TEST_FILE = test.out

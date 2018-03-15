@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 17:12:41 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/13 00:56:02 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 05:22:03 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		main(int argc, char **argv)
 	close(fd);
 	if ((init_new_win(p.win, (t_ivec){800, 800}, "FdF")) == 0)
 		ft_error("[Erreur] Echec de l'intialization de la fenètre");
-		set_hooks(&p);
+	set_hooks(&p);
+	p.win->ocl = init_opencl();
 	mlx_loop(p.win->mlx);
 }

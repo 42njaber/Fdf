@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:12:18 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/13 00:00:22 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/14 01:54:37 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	identity(t_mat4 m)
 			m[i] = 0;
 }
 
-void	translate(t_mat4 m, t_vec4 v)
+void	translate(t_mat4 m, t_vec3 v)
 {
 	m[3] += v.x * m[15];
 	m[7] += v.y * m[15];
 	m[11] += v.z * m[15];
 }
 
-void	scale(t_mat4 m, t_vec4 v)
+void	scale(t_mat4 m, t_vec3 v)
 {
 	m[0] *= v.x;
 	m[1] *= v.x;
@@ -59,13 +59,9 @@ void	scale(t_mat4 m, t_vec4 v)
 	m[9] *= v.z;
 	m[10] *= v.z;
 	m[11] *= v.z;
-	m[12] *= v.w;
-	m[13] *= v.w;
-	m[14] *= v.w;
-	m[15] *= v.w;
 }
 
-void	rotate(t_mat4 m, t_vec4 v)
+void	rotate(t_mat4 m, t_vec3 v)
 {
 	t_mat4	tmp;
 
