@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 23:03:04 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/14 23:28:44 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 20:27:40 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,8 @@ static void				map_segment(t_ptr *p, t_ivec v1, t_ivec v2)
 	v[1] = apply_mat_vec3(v[1], p->transform);
 	if (!p->is_perspective_active || (v[0].z > p->near && v[1].z > p->near))
 	{
-		if (p->is_perspective_active)
-		{
-			v[0] = apply_mat_vec3(v[0], p->perspective);
-			v[1] = apply_mat_vec3(v[1], p->perspective);
-		}
+		v[0] = apply_mat_vec3(v[0], p->perspective);
+		v[1] = apply_mat_vec3(v[1], p->perspective);
 		v[0] = apply_mat_vec3(v[0], p->align);
 		v[1] = apply_mat_vec3(v[1], p->align);
 		points[0] = (t_vec2){v[0].x, v[0].y};
@@ -62,23 +59,58 @@ static void				map_segment(t_ptr *p, t_ivec v1, t_ivec v2)
 	}
 }
 
+void					draw_vbo_opencl(t_ptr *p)
+{
+	cl_event	event;
+	cl_int		err;
+
+	clSetKernelArg(p->draw_vbo->cores[0], 6,
+			sizeof(int), (int[1]){p->aliasing});
+	clSetKernelArg(p->draw_vbo->cores[0], 8,
+			sizeof(float[16]), p->transform);
+	clSetKernelArg(p->draw_vbo->cores[0], 9,
+			sizeof(float[16]), p->perspective);
+	clSetKernelArg(p->draw_vbo->cores[0], 10,
+			sizeof(float[16]), p->align);
+	if ((err = clEnqueueNDRangeKernel(p->opencl->gpu_command_queue,
+			p->draw_vbo->cores[0], 1, NULL, (size_t[1]){(p->map->x - 1) *
+			p->map->y + p->map->x * (p->map->y - 1)},
+			NULL, 0, NULL, &event)) != CL_SUCCESS)
+		ft_error("[Erreur] Echec d'execution du kernel"
+				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+	if ((err = clEnqueueReadBuffer(p->opencl->gpu_command_queue,
+			p->draw_vbo->memobjs[0], CL_TRUE, 0,
+			p->win->img.line * p->win->img.size.y,
+			p->win->img.buf, 1, &event, NULL)) != CL_SUCCESS)
+		ft_error("[Erreur] Echec durant la lecture du buffe"
+				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+}
+
 void					draw_map(t_ptr *p)
 {
-	size_t	x;
-	size_t	y;
+	size_t		x;
+	size_t		y;
+	long		tmp;
 
-	y = 0;
-	while (y < p->map->y)
+	tmp = clock();
+	if (p->use_opencl)
+		draw_vbo_opencl(p);
+	else
 	{
-		x = 0;
-		while (x < p->map->x)
+		y = 0;
+		while (y < p->map->y && (x = 0) == 0)
 		{
-			if (x < p->map->x - 1)
-				map_segment(p, (t_ivec){x, y}, (t_ivec){x + 1, y});
-			if (y < p->map->y - 1)
-				map_segment(p, (t_ivec){x, y}, (t_ivec){x, y + 1});
-			x++;
+			while (x < p->map->x)
+			{
+				if (x < p->map->x - 1)
+					map_segment(p, (t_ivec){x, y}, (t_ivec){x + 1, y});
+				if (y < p->map->y - 1)
+					map_segment(p, (t_ivec){x, y}, (t_ivec){x, y + 1});
+				x++;
+			}
+			y++;
 		}
-		y++;
 	}
+	clFinish(p->opencl->gpu_command_queue);
+	p->win->img.tmp = clock() - tmp;
 }

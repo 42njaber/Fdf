@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 19:13:53 by njaber            #+#    #+#             */
-/*   Updated: 2018/01/27 20:25:18 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 22:22:24 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define BUFF_SIZE 32
 
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
 

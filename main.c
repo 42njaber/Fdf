@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 17:12:41 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/15 05:22:03 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 20:55:26 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,16 @@ int		main(int argc, char **argv)
 	if (argc < 2)
 		ft_error("Usage: ./fdf <map_file>.");
 	if (argc > 2)
-		ft_error("[Erreur] Trop d'arguments.");
+		ft_error("[Erreur] Trop d'arguments.\n");
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
-		ft_error("[Erreur] Impossible d'ouvrir le fichier.");
-	if (((p.map = (t_map*)ft_memalloc(sizeof(t_map))) == NULL && !(p.win = NULL)) ||
-		(p.win = (t_win*)ft_memalloc(sizeof(t_win))) == NULL)
-		ft_error("[Erreur] Echec d'allocation mémoire.");
-	init_map(fd, &p);
+		ft_error("[Erreur] Impossible d'ouvrir le fichier.\n");
+	if ((p.win = (t_win*)ft_memalloc(sizeof(t_win))) == NULL)
+		ft_error("[Erreur] Echec d'allocation mémoire.\n");
+	if ((p.map = (t_map*)ft_memalloc(sizeof(t_map))) == NULL)
+		ft_error("[Erreur] Echec d'allocation mémoire.\n");
+	init_struct(fd, &p);
 	close(fd);
-	if ((init_new_win(p.win, (t_ivec){800, 800}, "FdF")) == 0)
-		ft_error("[Erreur] Echec de l'intialization de la fenètre");
 	set_hooks(&p);
-	p.win->ocl = init_opencl();
+	ft_printf("test\n");
 	mlx_loop(p.win->mlx);
 }

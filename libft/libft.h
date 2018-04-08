@@ -6,7 +6,7 @@
 /*   By: njaber <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 16:20:23 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/13 01:01:56 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 12:33:13 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ typedef enum	e_type {
 	PTR
 }				t_type;
 
-int				ft_error(const char *msg);
 void			ft_print_memory(const void *addr, size_t len, t_type type);
 void			ft_print_bits(const t_byte *bytes, size_t len);
 void			ft_putchar(char c);

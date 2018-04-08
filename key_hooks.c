@@ -6,35 +6,41 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 01:04:15 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/14 03:40:09 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 22:11:39 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		key_press_hook(int keyCode, void *parm)
+int		key_press_hook(int key_code, void *parm)
 {
 	t_ptr	*p;
 
 	p = (t_ptr*)parm;
-	if (keyCode == 53)
+	if (key_code == 53)
 		exit(0);
-	else if (keyCode == 35)
-		p->is_perspective_active = !p->is_perspective_active;
-	else
+	else if (key_code == 8)
+		p->use_opencl = !p->use_opencl;
+	else if (key_code == 12)
+		p->aliasing = (p->aliasing + 1) % 3;
+	else if (key_code == 35)
 	{
-		//printf("Key pressed : %03d\n", keyCode);
-		p->keys[keyCode] = 1;
+		p->is_perspective_active = !p->is_perspective_active;
+		clSetKernelArg(p->draw_vbo->cores[0], 7, sizeof(int),
+				(int[1]){p->is_perspective_active});
 	}
+	else if (key_code == 37)
+		p->win->img.line_draw_mode = !p->win->img.line_draw_mode;
+	else
+		p->keys[key_code] = 1;
 	return (0);
 }
 
-int		key_release_hook(int keyCode, void *parm)
+int		key_release_hook(int key_code, void *parm)
 {
 	t_ptr	*p;
 
 	p = (t_ptr*)parm;
-	//printf("Key released : %03d\n", keyCode);
-	p->keys[keyCode] = 0;
+	p->keys[key_code] = 0;
 	return (0);
 }

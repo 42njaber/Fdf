@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 21:11:55 by njaber            #+#    #+#             */
-/*   Updated: 2018/01/19 20:12:44 by njaber           ###   ########.fr       */
+/*   Updated: 2018/03/15 12:32:42 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef union	u_ucd {
 }				t_ucd;
 
 int				ft_printf(const char *format, ...);
+void			ft_error(const char *format, ...);
 char			*ft_mapper(const char *spec, va_list args, t_buf *buf);
 char			*pf_format(const char *parm, t_buf *buf, va_list arg);
 

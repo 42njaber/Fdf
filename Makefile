@@ -1,6 +1,7 @@
 SRC = init.c \
 	  main.c \
 	  display.c \
+	  load_opencl.c \
 	  key_hooks.c \
 	  key_handler.c \
 	  mouse_hooks.c \

@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 22:58:17 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/14 23:23:08 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 21:03:22 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,3 @@ unsigned int			color_gradiant(unsigned int *colors, double gradiant)
 			(colors[1] & 0xFF) * gradiant - 0.5);
 	return (ret);
 }
-

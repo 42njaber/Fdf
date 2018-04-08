@@ -6,13 +6,13 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 01:57:02 by njaber            #+#    #+#             */
-/*   Updated: 2018/03/15 05:05:20 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 22:05:45 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libgxns.h"
 
-char	*join_free(char *s1, char *s2, size_t src_len)
+char			*join_free(char *s1, char *s2, size_t src_len)
 {
 	size_t	dst_len;
 	char	*ret;
@@ -25,7 +25,7 @@ char	*join_free(char *s1, char *s2, size_t src_len)
 	return (ret);
 }
 
-cl_program		createProgramFromFile(cl_context context, char *file)
+cl_program		create_program_from_file(cl_context context, char *file)
 {
 	cl_program	ret;
 	char		*kernel;
@@ -34,40 +34,42 @@ cl_program		createProgramFromFile(cl_context context, char *file)
 	int			rd;
 
 	if ((fd = open(file, O_RDONLY)) < 0)
-		ft_error("[Erreur] Impossible d'ouvrir le fichier.");
+		ft_error("[Erreur] Impossible d'ouvrir le fichier.\n");
 	rd = read(fd, buf, 4096);
 	kernel = ft_strnew(rd);
 	ft_memcpy(kernel, buf, rd);
-	while ((rd = read(fd, buf, 4096)) > 0) 
+	while ((rd = read(fd, buf, 4096)) > 0)
 		kernel = join_free(kernel, buf, rd);
 	if (rd == -1)
-		ft_error("[Erreur] Erreur durant la lecture du fichier.");
+		ft_error("[Erreur] Erreur durant la lecture du fichier.\n");
 	ret = clCreateProgramWithSource(context, 1,
 			(const char**)&kernel, NULL, NULL);
+	free(kernel);
 	return (ret);
-}
-
-static void		create_img_cpy_kernel(t_kernel *kernel,
-		cl_context gpu_context)
-{
-	kernel->program = createProgramFromFile(gpu_context,
-			"libgxns/img_cpy.cl");
 }
 
 t_ocl			*init_opencl(void)
 {
 	t_ocl	*opencl;
+	size_t	tmp[1];
+	char	tmp2[128];
+	size_t	tmp3;
 
 	if ((opencl = (t_ocl*)ft_memalloc(sizeof(t_ocl))) == NULL)
-		ft_error("[Erreur] Echec d'allocation mémoire.");
+		ft_error("[Erreur] Echec d'allocation mémoire.\n");
 	opencl->gpu_context = clCreateContextFromType(NULL, CL_DEVICE_TYPE_GPU,
 			NULL, NULL, NULL);
 	clGetContextInfo(opencl->gpu_context, CL_CONTEXT_NUM_DEVICES,
 			sizeof(unsigned int), &opencl->gpu_nbr, NULL);
 	clGetContextInfo(opencl->gpu_context, CL_CONTEXT_DEVICES,
 			sizeof(cl_device_id[16]), opencl->gpus, NULL);
+	clGetDeviceInfo(opencl->gpus[0], CL_DEVICE_MAX_WORK_GROUP_SIZE,
+			sizeof(tmp), tmp, NULL);
+	ft_printf("Max work-group size: %d\n", tmp[0]);
+	clGetDeviceInfo(opencl->gpus[0], CL_DEVICE_VERSION,
+			sizeof(tmp2), tmp2, &tmp3);
+	ft_printf("Version: %.*s\n", tmp3, tmp2);
 	opencl->gpu_command_queue = clCreateCommandQueue(opencl->gpu_context,
 			opencl->gpus[0], 0, NULL);
-	create_img_cpy_kernel(&opencl->img_cpy, opencl->gpu_context);
 	return (opencl);
 }

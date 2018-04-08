@@ -8,9 +8,9 @@ SRC = draw_fig.c \
 	  gnl/get_next_line.c
 
 NAME = libgxns.a
-MLX = minilibx_macos/libmlx.a
-LFT = libft/libft.a
-LPF = ft_printf/libftprintf.a
+MLX = ../minilibx_macos/libmlx.a
+LFT = ../libft/libft.a
+LPF = ../ft_printf/libftprintf.a
 FLAGS = -Wall -Wextra -Werror
 
 OBJ = $(SRC:.c=.o)
@@ -33,13 +33,13 @@ force:
 	@true
 
 $(MLX): force
-	@$(MAKE) -C minilibx_macos/
+	@$(MAKE) -C ../minilibx_macos/
 
 $(LFT): force
-	@$(MAKE) -C libft/
+	@$(MAKE) -C ../libft/
 
 $(LPF): force
-	@$(MAKE) -C ft_printf/
+	@$(MAKE) -C ../ft_printf/
 
 $(NAME): $(MLX) $(LFT) $(LPF) $(OBJ) libgxns.h Makefile
 	@rm -f $@
@@ -55,9 +55,9 @@ clean:
 	@echo 			"Cleaning objects:"$(RED)
 	$(RM) $(OBJ)
 	@echo $(DEFAULT)"_________________"
-	$(MAKE) -C minilibx_macos/ clean
-	$(MAKE) -C libft/ fclean
-	$(MAKE) -C ft_printf/ fclean
+	$(MAKE) -C ../minilibx_macos/ clean
+	$(MAKE) -C ../libft/ fclean
+	$(MAKE) -C ../ft_printf/ fclean
 
 fclean: clean
 	@echo 			"_________________"
