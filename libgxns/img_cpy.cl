@@ -1,4 +1,3 @@
-
 float4					vec_mat_mult(float16 mat, float4 vec);
 void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size);
 uchar4					choose_color(float z);
@@ -143,13 +142,13 @@ __kernel void			draw_vbo(
 		{
 			if (fabs(unit.x) == 1)
 			{
-				offset = fmod(px.y + 0.5, (float)1);
+				offset = fmod((float)(px.y + 0.5), (float)1);
 				put_px(px.xy + (float2)(0, -0.5), (uchar4)(color.rgb, 0xFF * offset), buf, img_size);
 				put_px(px.xy + (float2)(0, 0.5), (uchar4)(color.rgb, 0xFF * (1 - offset)), buf, img_size);
 			}
 			else
 			{
-				offset = fmod(px.x + 0.5, (float)1);
+				offset = fmod((float)(px.x + 0.5), (float)1);
 				put_px(px.xy + (float2)(-0.5, 0), (uchar4)(color.rgb, 0xFF * offset), buf, img_size);
 				put_px(px.xy + (float2)(0.5, 0), (uchar4)(color.rgb, 0xFF * (1 - offset)), buf, img_size);
 			}
