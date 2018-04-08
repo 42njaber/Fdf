@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:08:48 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/08 22:31:34 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static char		**read_file(int fd, t_map *map)
 		i++;
 	}
 	map->y = i;
+	if ((map->height = (int**)ft_memalloc(sizeof(int*) * map->y)) == NULL)
+		ft_error("[Erreur] Echec d'allocation mémoire\n");
 	return (ret);
 }
 
@@ -59,8 +61,6 @@ static void		get_map(int fd, t_map *map)
 	size_t	digit;
 
 	buf = read_file(fd, map);
-	if ((map->height = (int**)ft_memalloc(sizeof(int*) * map->y)) == NULL)
-		ft_error("[Erreur] Echec d'allocation mémoire\n");
 	i = 0;
 	map->x = 0;
 	while (i < (int)map->y)
