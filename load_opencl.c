@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 20:23:49 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 19:16:04 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 20:04:43 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void			create_kernel(t_ptr *p)
 		free(kernel);
 		return ;
 	}
-	create_memobjs(p, opencl, kernel, img);
 	clSetKernelArg(kernel->cores[0], 3, sizeof(unsigned int), &img->px_size);
 	clSetKernelArg(kernel->cores[0], 4, sizeof(unsigned int), &img->line);
 	clSetKernelArg(kernel->cores[0], 5,
@@ -126,4 +125,5 @@ void			create_kernel(t_ptr *p)
 	clSetKernelArg(kernel->cores[0], 7,
 			sizeof(int[1]), (int[1]){p->is_perspective_active});
 	p->draw_vbo = kernel;
+	create_memobjs(p, opencl, kernel, img);
 }

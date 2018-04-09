@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 22:42:46 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 15:13:56 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 20:05:34 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ static void		move(t_ptr *p)
 static void		adjust_height(t_ptr *p)
 {
 	if (p->keys[125])
-		p->z_size -= 0.02;
+		p->z_size /= 1.05;
 	if (p->keys[126])
-		p->z_size += 0.02;
-	if (p->z_size < 0.1)
-		p->z_size = 0.1;
+		p->z_size *= 1.05;
+	if (p->z_size < 0.01)
+		p->z_size = 0.01;
 	if (p->z_size > 2)
 		p->z_size = 2;
 }

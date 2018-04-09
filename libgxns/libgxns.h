@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 23:56:43 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:22:03 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:40:35 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct	s_img {
 	int				endian;
 	int				line_draw_mode;
 	t_kernel		line_algo;
-	long			tmp;
 }				t_img;
 
 typedef struct	s_win {
