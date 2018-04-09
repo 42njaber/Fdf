@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 00:14:34 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 21:21:46 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:23:49 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ void	paint_window(t_win *win, t_kernel *opencl_kernel)
 {
 	uint64_t	time;
 
-	win->frame++;
 	time = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
-	if (win->frame % 60 == 0)
+	if (++win->frame % 60 == 0)
 		win->fps = 300000000000 / (time - win->frames[0]);
 	mlx_clear_window(win->mlx, win->win);
+	if (opencl_kernel != NULL)
+		clFinish(opencl_kernel->opencl->gpu_command_queue);
 	mlx_put_image_to_window(win->mlx, win->win, win->img.link, 0, 0);
 	if (opencl_kernel != NULL)
 	{

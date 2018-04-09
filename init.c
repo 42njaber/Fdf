@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 15:05:55 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:02:24 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void			init_struct(int fd, t_ptr *p)
 	p->opencl = init_opencl();
 	if ((init_new_win(p->win, (t_ivec){800, 800}, "FdF")) == 0)
 		ft_error("[Erreur] Echec de l'intialization de la fenètre\n");
+	p->draw_vbo = NULL;
 	create_kernel(p);
 	ft_bzero(p->keys, 256);
 }

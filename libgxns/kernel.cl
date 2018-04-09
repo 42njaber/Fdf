@@ -1,3 +1,6 @@
+
+//#error
+
 float4					vec_mat_mult(float16 mat, float4 vec);
 void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size);
 uchar4					choose_color(float z);

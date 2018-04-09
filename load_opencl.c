@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 20:23:49 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 16:43:21 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:16:04 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,15 @@ static void		create_memobjs(t_ptr *p, t_ocl *opencl,
 			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
 			((p->map->x - 1) * p->map->y + p->map->x * (p->map->y - 1))
 			* sizeof(unsigned int[2]), p->vbo_idx, NULL);
+	clSetKernelArg(kernel->cores[0], 0,
+			sizeof(cl_mem), (void*)&kernel->memobjs[0]);
+	clSetKernelArg(kernel->cores[0], 1,
+			sizeof(cl_mem), (void*)&kernel->memobjs[1]);
+	clSetKernelArg(kernel->cores[0], 2,
+			sizeof(cl_mem), (void*)&kernel->memobjs[2]);
 }
 
-static void		build_program(t_ocl *opencl, t_kernel *kernel)
+static int		build_program(t_ocl *opencl, t_kernel *kernel)
 {
 	char		*tmp;
 	size_t		tmp2;
@@ -85,16 +91,12 @@ static void		build_program(t_ocl *opencl, t_kernel *kernel)
 	ft_printf("Build log :\n%.*s\n", tmp2, tmp);
 	free(tmp);
 	if (err != CL_SUCCESS)
-		ft_error("[Error] Could not build kernel program"
-				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+		return (err);
 	kernel->cores[0] = clCreateKernel(kernel->program, "draw_vbo", &err);
 	if (err != CL_SUCCESS)
-		ft_error("[Error] Could not create kernel program"
-				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+		return (err);
 	kernel->cores[1] = clCreateKernel(kernel->program, "clear_buf", &err);
-	if (err != CL_SUCCESS)
-		ft_error("[Error] Could not create kernel program"
-				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+	return (err);
 }
 
 void			create_kernel(t_ptr *p)
@@ -102,25 +104,26 @@ void			create_kernel(t_ptr *p)
 	t_kernel	*kernel;
 	t_img		*img;
 	t_ocl		*opencl;
+	int			err;
 
-	if ((p->draw_vbo = (t_kernel*)ft_memalloc(sizeof(t_kernel))) == NULL)
+	if ((kernel = (t_kernel*)ft_memalloc(sizeof(t_kernel))) == NULL)
 		ft_error("[Erreur] Echec d'allocation mémoire.");
-	kernel = p->draw_vbo;
 	img = &p->win->img;
 	opencl = p->opencl;
 	kernel->opencl = opencl;
+	if ((err = build_program(opencl, kernel)) != CL_SUCCESS)
+	{
+		ft_printf("[Error] Could not build kernel program"
+				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+		free(kernel);
+		return ;
+	}
 	create_memobjs(p, opencl, kernel, img);
-	build_program(opencl, kernel);
-	clSetKernelArg(kernel->cores[0], 0,
-			sizeof(cl_mem), (void*)&kernel->memobjs[0]);
-	clSetKernelArg(kernel->cores[0], 1,
-			sizeof(cl_mem), (void*)&kernel->memobjs[1]);
-	clSetKernelArg(kernel->cores[0], 2,
-			sizeof(cl_mem), (void*)&kernel->memobjs[2]);
 	clSetKernelArg(kernel->cores[0], 3, sizeof(unsigned int), &img->px_size);
 	clSetKernelArg(kernel->cores[0], 4, sizeof(unsigned int), &img->line);
 	clSetKernelArg(kernel->cores[0], 5,
 			sizeof(int[2]), (int[2]){img->size.x, img->size.y});
 	clSetKernelArg(kernel->cores[0], 7,
 			sizeof(int[1]), (int[1]){p->is_perspective_active});
+	p->draw_vbo = kernel;
 }

@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 23:03:04 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 15:18:01 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:24:08 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,8 @@ void					draw_map(t_ptr *p)
 {
 	size_t		x;
 	size_t		y;
-	long		tmp;
 
-	tmp = clock();
-	if (p->use_opencl)
+	if (p->draw_vbo != NULL && p->use_opencl)
 		draw_vbo_opencl(p);
 	else
 	{
@@ -113,6 +111,4 @@ void					draw_map(t_ptr *p)
 			y++;
 		}
 	}
-	clFinish(p->opencl->gpu_command_queue);
-	p->win->img.tmp = clock() - tmp;
 }

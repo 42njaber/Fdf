@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 17:04:31 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 14:53:54 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 19:24:26 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ static void		print_data(t_ptr *p)
 	display_data_float(p->win, "Z Size:", p->z_size * 10, 90);
 	display_data_str(p->win, "Mode:", p->is_perspective_active ?
 			"Perspective" : "Orthogonal", 110);
-	display_data_str(p->win, "OpenCL:", p->use_opencl ? "ON" : "OFF", 130);
+	if (p->draw_vbo == NULL)
+		display_data_str(p->win, "OpenCL:", "Inactive", 130);
+	else
+		display_data_str(p->win, "OpenCL:", p->use_opencl ? "ON" : "OFF", 130);
 	display_data_float(p->win, "AA:", (float)p->aliasing, 150);
 }
 
