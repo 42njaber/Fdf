@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:31:34 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 15:05:55 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void			init_struct(int fd, t_ptr *p)
 	p->rot = (t_vec2){0, 0};
 	p->dest_rot = (t_vec2){50, 45};
 	p->z_size = 0.3;
-	p->zoom = 5;
-	p->dest_zoom = 2;
+	p->zoom = 10;
+	p->dest_zoom = 50;
 	p->button = -1;
 	p->pos = (t_vec2){0, 0};
 	p->dest_pos = (t_vec2){0, 0};
-	p->near = 0.01;
-	p->far = 2;
+	p->near = 1;
+	p->far = 100;
 	p->fov = 90;
 	p->is_perspective_active = 1;
 	p->use_opencl = 1;

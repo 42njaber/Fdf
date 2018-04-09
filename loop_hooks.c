@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 17:04:31 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 21:30:25 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 14:53:54 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,18 @@ static void		transform_handler(t_ptr *p)
 	scale(p->transform, (t_vec3){1, 1, p->z_size});
 	rotate(p->transform, (t_vec3){0, 0, p->rot.y});
 	rotate(p->transform, (t_vec3){p->rot.x, 0, 0});
-	scale(p->transform, (t_vec3){-p->zoom, -p->zoom, -p->zoom / 1000});
-	translate(p->transform, (t_vec3){0.0, 0.0, 0.05});
+	scale(p->transform, (t_vec3){1 * 1000, 1 * 1000, -1});
+	translate(p->transform, (t_vec3){0.0, 0.0, p->zoom});
 	identity(p->perspective);
 	s = 1 / tan(p->fov * 0.5 * M_PI / 180);
-	if (!p->is_perspective_active)
-		scale(p->transform, (t_vec3){-20, -20, -20});
-	else
+	if (p->is_perspective_active)
+	{
 		ft_memcpy(p->perspective, (t_mat4){s, 0, 0, 0, 0, s, 0, 0, 0, 0,
 				-(p->far) / (p->far - p->near), -(p->far * p->near)
-				/ (p->far - p->near), 0, 0, -1, 0}, sizeof(t_mat4));
+				/ (p->far - p->near), 0, 0, 1, 0}, sizeof(t_mat4));
+	}
+	else
+		scale(p->transform, (t_vec3){s / p->zoom, s / p->zoom, 1});
 	identity(p->align);
 	translate(p->align, (t_vec3){p->win->size.x / 2, p->win->size.y / 2, 0.0});
 }

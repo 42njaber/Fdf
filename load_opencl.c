@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 20:23:49 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:01:22 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:43:21 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void		build_program(t_ocl *opencl, t_kernel *kernel)
 	int			err;
 
 	kernel->program = create_program_from_file(opencl->gpu_context,
-			"libgxns/img_cpy.cl");
+			"libgxns/kernel.cl");
 	err = clBuildProgram(kernel->program, 0, NULL,
 					"-cl-unsafe-math-optimizations", NULL, NULL);
 	tmp = (char*)ft_memalloc(4096);

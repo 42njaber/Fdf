@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 01:32:56 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/07 16:52:38 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 14:56:57 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int		button_press_hook(int button, int x, int y, void *parms)
 	p = (t_ptr*)parms;
 	if (button == 4 || button == 5)
 	{
-		p->dest_zoom *= (button == 4) ? 0.96 : 1.04;
-		if (p->dest_zoom > 5)
-			p->dest_zoom = 5;
-		if (p->dest_zoom < 0.1)
-			p->dest_zoom = 0.1;
+		p->dest_zoom *= (button == 5) ? 0.96 : 1.04;
+		if (p->dest_zoom > 200)
+			p->dest_zoom = 200;
+		if (p->dest_zoom < 2)
+			p->dest_zoom = 2;
 	}
 	else
 	{

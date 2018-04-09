@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 23:03:04 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 20:27:40 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/09 15:18:01 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void					draw_vbo_opencl(t_ptr *p)
 			sizeof(float[16]), p->perspective);
 	clSetKernelArg(p->draw_vbo->cores[0], 10,
 			sizeof(float[16]), p->align);
+	clSetKernelArg(p->draw_vbo->cores[0], 11,
+			sizeof(float), (float[1]){p->zoom});
 	if ((err = clEnqueueNDRangeKernel(p->opencl->gpu_command_queue,
 			p->draw_vbo->cores[0], 1, NULL, (size_t[1]){(p->map->x - 1) *
 			p->map->y + p->map->x * (p->map->y - 1)},
