@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 19:02:24 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 16:22:31 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,24 @@ void			init_struct(int fd, t_ptr *p)
 	get_map(fd, p->map);
 	p->rot = (t_vec2){0, 0};
 	p->dest_rot = (t_vec2){50, 45};
-	p->z_size = 0.3;
+	p->z_size = 0.1;
 	p->zoom = 10;
-	p->dest_zoom = 50;
+	p->dest_zoom = ft_max(p->map->x, p->map->y);
 	p->button = -1;
-	p->pos = (t_vec2){0, 0};
-	p->dest_pos = (t_vec2){0, 0};
+	p->pos = (t_vec3){0, 0, 0};
+	p->dest_pos = (t_vec3){0, 0, 0};
 	p->near = 1;
 	p->far = 100;
 	p->fov = 90;
 	p->is_perspective_active = 1;
 	p->use_opencl = 1;
-	p->aliasing = 1;
+	p->use_motion_blur = 1;
+	p->aliasing = 2;
+	p->fog = 3.0;
 	ft_memcpy(p->colors, (unsigned int[5]){0x444444, 0xDDDDDD,
-			0xFFFF00, 0xFF7700, 0xFF0000}, sizeof(unsigned int[5]));
+			0x0000FF, 0xFF7700, 0x00FF00}, sizeof(unsigned int[5]));
 	p->opencl = init_opencl();
-	if ((init_new_win(p->win, (t_ivec){800, 800}, "FdF")) == 0)
+	if ((init_new_win(p->win, (t_ivec){1200, 800}, "FdF")) == 0)
 		ft_error("[Erreur] Echec de l'intialization de la fenètre\n");
 	p->draw_vbo = NULL;
 	create_kernel(p);
@@ -112,6 +114,7 @@ void			init_struct(int fd, t_ptr *p)
 void			set_hooks(t_ptr *p)
 {
 	mlx_loop_hook(p->win->mlx, loop_hook, (void*)p);
+	mlx_expose_hook(p->win->win, loop_hook, (void*)p);
 	mlx_hook(p->win->win, 6, 0, motion_hook, (void*)p);
 	mlx_hook(p->win->win, 4, 0, button_press_hook, (void*)p);
 	mlx_hook(p->win->win, 5, 0, button_release_hook, (void*)p);

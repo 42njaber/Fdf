@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 23:56:43 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 19:40:35 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 14:09:59 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,12 @@ void			rotate(t_mat4 m, t_vec3 v);
 void			multiply(t_mat4 m1, t_mat4 m2);
 
 int				init_new_win(t_win *win, t_ivec size, char *title);
-void			paint_window(t_win *win, t_kernel *opencl_kernel);
+void			paint_window(t_win *win, t_kernel *opencl_kernel,
+												char use_motion_blur);
 
 void			display_data_float(t_win *win, char *name, double data, int y);
-void			display_data_vec(t_win *win, char *name, t_vec2 data, int y);
+void			display_data_vec2(t_win *win, char *name, t_vec2 data, int y);
+void			display_data_vec3(t_win *win, char *name, t_vec3 data, int y);
 void			display_data_str(t_win *win, char *name, char *data, int y);
 
 t_ocl			*init_opencl(void);

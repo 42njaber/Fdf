@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 08:04:25 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:20:55 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 13:52:32 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct	s_ptr {
 	t_vec2				origin_rot;
 	t_vec2				rot;
 	t_vec2				dest_rot;
-	t_vec2				pos;
-	t_vec2				dest_pos;
+	t_vec3				pos;
+	t_vec3				dest_pos;
 	t_ivec				mouse_origin;
 	char				keys[512];
 	int					button;
@@ -42,9 +42,11 @@ typedef struct	s_ptr {
 	char				is_perspective_active;
 	char				use_opencl;
 	char				aliasing;
-	double				far;
-	double				near;
-	double				fov;
+	char				use_motion_blur;
+	float				far;
+	float				near;
+	float				fov;
+	float				fog;
 	t_ocl				*opencl;
 	t_kernel			*draw_vbo;
 	float				*vbo;

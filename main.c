@@ -6,14 +6,14 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 17:12:41 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 20:55:26 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 16:23:31 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <fcntl.h>
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	int		fd;
 	t_ptr	p;
@@ -31,6 +31,5 @@ int		main(int argc, char **argv)
 	init_struct(fd, &p);
 	close(fd);
 	set_hooks(&p);
-	ft_printf("test\n");
 	mlx_loop(p.win->mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 01:04:15 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:11:39 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 15:28:34 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int		key_press_hook(int key_code, void *parm)
 		p->use_opencl = !p->use_opencl;
 	else if (key_code == 12)
 		p->aliasing = (p->aliasing + 1) % 3;
+	else if (key_code == 3)
+		p->fog = (int)p->fog % 4 + 1;
+	else if (key_code == 41)
+		p->use_motion_blur = !p->use_motion_blur;
 	else if (key_code == 35)
 	{
 		p->is_perspective_active = !p->is_perspective_active;

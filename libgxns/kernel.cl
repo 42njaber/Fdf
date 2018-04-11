@@ -1,8 +1,7 @@
 
-//#error
 
 float4					vec_mat_mult(float16 mat, float4 vec);
-void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size);
+void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size, int use_motion_blur);
 uchar4					choose_color(float z);
 uchar4 __OVERLOAD__		mix(uchar4 c1, uchar4 c2, float gradiant);
 
@@ -22,7 +21,7 @@ float4					vec_mat_mult(float16 mat, float4 vec)
 	return (ret);
 }
 
-void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size)
+void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size, int motion_blur)
 {
 	float	a;
 	float4	tmp;
@@ -35,7 +34,7 @@ void					put_px(float2 px, uchar4 color, __global uchar4 *buf, int2 img_size)
 	tmp = (float4)(fmin(color.r * a + buf_tmp.r, 255),
 				   fmin(color.g * a + buf_tmp.g, 255),
 				   fmin(color.b * a + buf_tmp.b, 255), 0);
-	buf[(int)px.x + (int)px.y * img_size.x] = (uchar4)(tmp.r, tmp.g, tmp.b, 0);
+	buf[(int)px.x + (int)px.y * img_size.x] = (uchar4)(tmp.r, tmp.g, tmp.b, motion_blur ? 0xAF : 0x00);
 }
 
 uchar4 __OVERLOAD__ mix(uchar4 c1, uchar4 c2, float gradiant)
@@ -77,10 +76,12 @@ __kernel void			draw_vbo(
 						   int2 img_size,
 						   int antialiasing,
 						   int is_perspective_active,
+						   int use_motion_blur,
 						   float16 transformationMatrix,
 						   float16 perspectiveMatrix,
 						   float16 alignMatrix,
-						   float zoom
+						   float zoom,
+						   float fog
 						  )
 {
 	int		id;
@@ -141,40 +142,40 @@ __kernel void			draw_vbo(
 	px = v1;
 	while (distance(v1.xy, v2.xy) > distance(v1.xy, px.xy) - 0.5)
 	{
-		color = (uchar4)(choose_color(px.z).rgb, 0xFF * (1 - (1 / fmax((float)0, (float)pow(1 + px.w / zoom, 2) - 2))));
+		color = (uchar4)(choose_color(px.z).rgb, 0xFF * (1 - (1 / fmax((float)1, (float)pow((float)(1 + px.w / 20 / sqrt(zoom)), 7 - fog * 1.2) - 5 + fog))));
 		if (antialiasing == 1)
 		{
 			if (fabs(unit.x) == 1)
 			{
 				offset = fmod((float)(px.y + 0.5), (float)1);
-				put_px(px.xy + (float2)(0, -0.5), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size);
-				put_px(px.xy + (float2)(0, 0.5), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size);
+				put_px(px.xy + (float2)(0, -0.5), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size, use_motion_blur);
+				put_px(px.xy + (float2)(0, 0.5), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size, use_motion_blur);
 			}
 			else
 			{
 				offset = fmod((float)(px.x + 0.5), (float)1);
-				put_px(px.xy + (float2)(-0.5, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size);
-				put_px(px.xy + (float2)(0.5, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size);
+				put_px(px.xy + (float2)(-0.5, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size, use_motion_blur);
+				put_px(px.xy + (float2)(0.5, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size, use_motion_blur);
 			}
 		}
 		else if (antialiasing == 2)
 		{
-			put_px(px.xy, color, buf, img_size);
+			put_px(px.xy, color, buf, img_size, use_motion_blur);
 			if (fabs(unit.x) == 1)
 			{
 				offset = fmod(px.y, 1);
-				put_px(px.xy + (float2)(0, -1), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size);
-				put_px(px.xy + (float2)(0, 1), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size);
+				put_px(px.xy + (float2)(0, -1), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size, use_motion_blur);
+				put_px(px.xy + (float2)(0, 1), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size, use_motion_blur);
 			}
 			else
 			{
 				offset = fmod(px.x, 1);
-				put_px(px.xy + (float2)(-1, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size);
-				put_px(px.xy + (float2)(1, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size);
+				put_px(px.xy + (float2)(-1, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * offset), buf, img_size, use_motion_blur);
+				put_px(px.xy + (float2)(1, 0), (uchar4)(color.rgb, color.a + (0xFF - color.a) * (1 - offset)), buf, img_size, use_motion_blur);
 			}
 		}
 		else
-			put_px(px.xy, color, buf, img_size);
+			put_px(px.xy, color, buf, img_size, use_motion_blur);
 		px += unit;
 	}
 }
@@ -185,5 +186,5 @@ __kernel void	clear_buf(__global uchar4 *buf,
 	int		id;
 
 	id = get_global_id(0);
-	buf[id] = (uchar4)(val.r, val.g, val.b, 0x00);
+	buf[id] = (uchar4)(val.r, val.g, val.b, val.a);
 }

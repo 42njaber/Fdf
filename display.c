@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 23:03:04 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 20:00:26 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 13:55:22 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static unsigned int		get_color_at(t_ptr *p, double z)
 					p->colors[3]}, z / 10));
 	else if (z < 20)
 		ret = (color_gradiant((unsigned int[2]){p->colors[3],
-					p->colors[4]}, (z + 10) / 10));
+					p->colors[4]}, (z - 10) / 10));
 	else
 		ret = (p->colors[4]);
 	return (ret);
@@ -59,21 +59,29 @@ static void				map_segment(t_ptr *p, t_ivec v1, t_ivec v2)
 	}
 }
 
+void					set_args(t_ptr *p)
+{
+	clSetKernelArg(p->draw_vbo->cores[0], 6,
+			sizeof(int), (int[1]){p->aliasing});
+	clSetKernelArg(p->draw_vbo->cores[0], 8,
+			sizeof(int), (float[1]){p->use_motion_blur});
+	clSetKernelArg(p->draw_vbo->cores[0], 9,
+			sizeof(float[16]), p->transform);
+	clSetKernelArg(p->draw_vbo->cores[0], 10,
+			sizeof(float[16]), p->perspective);
+	clSetKernelArg(p->draw_vbo->cores[0], 11,
+			sizeof(float[16]), p->align);
+	clSetKernelArg(p->draw_vbo->cores[0], 12,
+			sizeof(float), (float[1]){p->zoom});
+	clSetKernelArg(p->draw_vbo->cores[0], 13,
+			sizeof(float), (float[1]){p->fog});
+}
+
 void					draw_vbo_opencl(t_ptr *p)
 {
 	cl_event	event;
 	cl_int		err;
 
-	clSetKernelArg(p->draw_vbo->cores[0], 6,
-			sizeof(int), (int[1]){p->aliasing});
-	clSetKernelArg(p->draw_vbo->cores[0], 8,
-			sizeof(float[16]), p->transform);
-	clSetKernelArg(p->draw_vbo->cores[0], 9,
-			sizeof(float[16]), p->perspective);
-	clSetKernelArg(p->draw_vbo->cores[0], 10,
-			sizeof(float[16]), p->align);
-	clSetKernelArg(p->draw_vbo->cores[0], 11,
-			sizeof(float), (float[1]){p->zoom});
 	if ((err = clEnqueueNDRangeKernel(p->opencl->gpu_command_queue,
 			p->draw_vbo->cores[0], 1, NULL, (size_t[1]){(p->map->x - 1) *
 			p->map->y + p->map->x * (p->map->y - 1)},
@@ -94,7 +102,10 @@ void					draw_map(t_ptr *p)
 	size_t		y;
 
 	if (p->draw_vbo != NULL && p->use_opencl)
+	{
+		set_args(p);
 		draw_vbo_opencl(p);
+	}
 	else
 	{
 		y = 0;

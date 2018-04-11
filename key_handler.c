@@ -6,11 +6,23 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 22:42:46 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/09 20:05:34 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 15:58:40 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void		move2(t_ptr *p)
+{
+	if (p->keys[49])
+		p->dest_pos.z += 1;
+	if (p->keys[257])
+		p->dest_pos.z += -1;
+	if (p->dest_pos.z < -20)
+		p->dest_pos.z = -20;
+	if (p->dest_pos.z > 500)
+		p->dest_pos.z = 500;
+}
 
 static void		move(t_ptr *p)
 {
@@ -38,9 +50,10 @@ static void		move(t_ptr *p)
 		p->dest_pos.x = copysign(p->map->x / 2, p->dest_pos.x);
 	if (fabs(p->dest_pos.y) > p->map->y / 2)
 		p->dest_pos.y = copysign(p->map->y / 2, p->dest_pos.y);
+	move2(p);
 }
 
-static void		adjust_height(t_ptr *p)
+static void		adjust(t_ptr *p)
 {
 	if (p->keys[125])
 		p->z_size /= 1.05;
@@ -54,8 +67,8 @@ static void		adjust_height(t_ptr *p)
 
 void			key_handler(t_ptr *p)
 {
-	if (p->keys[257])
-		adjust_height(p);
+	if (p->keys[261])
+		adjust(p);
 	else
 		move(p);
 }

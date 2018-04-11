@@ -1,5 +1,6 @@
 SRC = draw_fig.c \
 	  window.c \
+	  display_data.c \
 	  images.c \
 	  matrix.c \
 	  matrix2.c \
