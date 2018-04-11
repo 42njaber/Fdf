@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 16:22:31 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/11 19:02:36 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char		**read_file(int fd, t_map *map)
 	if ((ret = (char**)ft_memalloc(b_size * sizeof(char*))) == NULL)
 		ft_error("[Erreur] Echec d'allocation mémoire\n");
 	i = 0;
-	while ((rd = get_next_line(fd, &tmp)))
+	while ((rd = get_next_line(fd, &tmp)) > 0)
 	{
 		if (i >= b_size && (b_size *= 4))
 			ft_realloc((void**)&ret, b_size / 4 * sizeof(char*),
