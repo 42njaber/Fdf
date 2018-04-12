@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 17:04:31 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/12 14:34:29 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:41:05 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static void		transform_handler(t_ptr *p)
 	translate(p->transform,
 			(t_vec3){(p->map->x - 1) / -2.0, (p->map->y - 1) / -2.0, 0.0});
 	scale(p->transform, (t_vec3){1, 1, p->z_size});
-	translate(p->transform, (t_vec3){p->pos.x, p->pos.y, -p->pos.z});
+	translate(p->transform, (t_vec3){p->pos.x, p->pos.y,
+			-p->pos.z * p->zoom / 10});
 	rotate(p->transform, (t_vec3){0, 0, p->rot.y});
 	rotate(p->transform, (t_vec3){p->rot.x, 0, 0});
 	scale(p->transform, (t_vec3){1 * 1000, 1 * 1000, -1});
