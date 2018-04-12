@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 20:23:49 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 15:52:55 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:28:51 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void		generate_idx(t_ptr *p)
 					1 : p->map->x);
 		i++;
 	}
+	p->vbo_size = (p->map->x - 1) * p->map->y + p->map->x * (p->map->y - 1);
 }
 
 static int		create_memobjs(t_ptr *p, t_ocl *opencl,
@@ -75,6 +76,7 @@ static int		create_memobjs(t_ptr *p, t_ocl *opencl,
 			sizeof(cl_mem), (void*)&kernel->memobjs[1]);
 	err |= clSetKernelArg(kernel->cores[0], 2,
 			sizeof(cl_mem), (void*)&kernel->memobjs[2]);
+	err |= clSetKernelArg(kernel->cores[0], 3, sizeof(size_t), &p->vbo_size);
 	err |= clSetKernelArg(kernel->cores[1], 0,
 			sizeof(cl_mem), (void*)&kernel->memobjs[0]);
 	return (err);
@@ -124,11 +126,11 @@ void			create_kernel(t_ptr *p)
 		free(kernel);
 		return ;
 	}
-	clSetKernelArg(kernel->cores[0], 3, sizeof(unsigned int), &img->px_size);
-	clSetKernelArg(kernel->cores[0], 4, sizeof(unsigned int), &img->line);
-	clSetKernelArg(kernel->cores[0], 5,
+	clSetKernelArg(kernel->cores[0], 4, sizeof(unsigned int), &img->px_size);
+	clSetKernelArg(kernel->cores[0], 5, sizeof(unsigned int), &img->line);
+	clSetKernelArg(kernel->cores[0], 6,
 			sizeof(int[2]), (int[2]){img->size.x, img->size.y});
-	clSetKernelArg(kernel->cores[0], 7,
+	clSetKernelArg(kernel->cores[0], 8,
 			sizeof(int[1]), (int[1]){p->is_perspective_active});
 	p->draw_vbo = kernel;
 }

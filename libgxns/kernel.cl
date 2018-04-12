@@ -72,6 +72,7 @@ __kernel void			draw_vbo(
 						   __global uchar4 *buf,
 						   __global float4 *vbo,
 						   __global uint2 *vbo_idx,
+						   ulong vbo_size,
 						   uint pixel_sz, uint line,
 						   int2 img_size,
 						   int antialiasing,
@@ -92,7 +93,8 @@ __kernel void			draw_vbo(
 	float	offset;
 	uchar4	color;
 
-	id = get_global_id(0);
+	if ((ulong)(id = get_global_id(0)) >= vbo_size)
+		return ;
 	px = vbo[vbo_idx[id].x];
 	v1.z = px.z;
 	px = vec_mat_mult(transformationMatrix, px);
@@ -142,7 +144,7 @@ __kernel void			draw_vbo(
 	px = v1;
 	while (distance(v1.xy, v2.xy) > distance(v1.xy, px.xy) - 0.5)
 	{
-		color = (uchar4)(choose_color(px.z).rgb, 0xFF * (1 - (1 / fmax((float)1, (float)pow((float)(1 + px.w / 20 / sqrt(zoom)),
+		color = (uchar4)(choose_color(px.z).rgb, fog == 4 ? 0 : 0xFF * (1 - (1 / fmax((float)1, (float)pow((float)(1 + px.w / 20 / sqrt(zoom)),
 																			(float)(7 - fog * 1.2)) - 5 + fog))));
 		if (antialiasing == 1)
 		{

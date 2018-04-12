@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 08:04:25 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 13:52:32 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:31:33 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct	s_ptr {
 	int					button;
 	double				z_size;
 	double				zoom;
+	double				max_zoom;
 	double				dest_zoom;
 	t_mat4				transform;
 	t_mat4				perspective;
@@ -51,6 +52,7 @@ typedef struct	s_ptr {
 	t_kernel			*draw_vbo;
 	float				*vbo;
 	unsigned int		*vbo_idx;
+	size_t				vbo_size;
 }				t_ptr;
 
 void			init_struct(int fd, t_ptr *p);

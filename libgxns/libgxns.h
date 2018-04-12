@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 23:56:43 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 14:09:59 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:27:40 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_ocl {
 	size_t				gpu_nbr;
 	cl_device_id		gpus[16];
 	cl_command_queue	gpu_command_queue;
+	size_t				gpu_wg_sz;
 }				t_ocl;
 
 typedef struct	s_kernel {

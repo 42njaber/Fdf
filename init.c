@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:17:07 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 19:02:36 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:32:57 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void			init_struct(int fd, t_ptr *p)
 	p->z_size = 0.1;
 	p->zoom = 10;
 	p->dest_zoom = ft_max(p->map->x, p->map->y);
+	p->max_zoom = ft_max(50, p->dest_zoom);
 	p->button = -1;
 	p->pos = (t_vec3){0, 0, 0};
 	p->dest_pos = (t_vec3){0, 0, 0};

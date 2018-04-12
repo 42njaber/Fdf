@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 01:57:02 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/08 22:05:45 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:27:55 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_ocl			*init_opencl(void)
 	clGetDeviceInfo(opencl->gpus[0], CL_DEVICE_MAX_WORK_GROUP_SIZE,
 			sizeof(tmp), tmp, NULL);
 	ft_printf("Max work-group size: %d\n", tmp[0]);
+	opencl->gpu_wg_sz = *tmp / 2u;
 	clGetDeviceInfo(opencl->gpus[0], CL_DEVICE_VERSION,
 			sizeof(tmp2), tmp2, &tmp3);
 	ft_printf("Version: %.*s\n", tmp3, tmp2);
