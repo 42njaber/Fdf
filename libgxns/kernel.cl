@@ -142,7 +142,8 @@ __kernel void			draw_vbo(
 	px = v1;
 	while (distance(v1.xy, v2.xy) > distance(v1.xy, px.xy) - 0.5)
 	{
-		color = (uchar4)(choose_color(px.z).rgb, 0xFF * (1 - (1 / fmax((float)1, (float)pow((float)(1 + px.w / 20 / sqrt(zoom)), 7 - fog * 1.2) - 5 + fog))));
+		color = (uchar4)(choose_color(px.z).rgb, 0xFF * (1 - (1 / fmax((float)1, (float)pow((float)(1 + px.w / 20 / sqrt(zoom)),
+																			(float)(7 - fog * 1.2)) - 5 + fog))));
 		if (antialiasing == 1)
 		{
 			if (fabs(unit.x) == 1)
