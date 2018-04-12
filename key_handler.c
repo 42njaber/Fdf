@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 22:42:46 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 15:58:40 by njaber           ###   ########.fr       */
+/*   Updated: 2018/04/12 14:55:26 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static void		adjust(t_ptr *p)
 		p->z_size /= 1.05;
 	if (p->keys[126])
 		p->z_size *= 1.05;
-	if (p->z_size < 0.01)
-		p->z_size = 0.01;
+	if (p->z_size < 0.001)
+		p->z_size = 0.001;
 	if (p->z_size > 2)
 		p->z_size = 2;
 }
