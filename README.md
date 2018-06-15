@@ -25,5 +25,5 @@ These options are only available if OpenCL is active:
 ---
 Examples
 
-[Image](img/fdf_42.png)
-[Image](img/fdf_europe.png)
+![Image](img/fdf_42.png)
+![Image](img/fdf_europe.png)
