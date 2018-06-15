@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 17:04:31 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/12 14:41:05 by njaber           ###   ########.fr       */
+/*   Updated: 2018/06/15 08:08:44 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static void		print_data(t_ptr *p)
 	display_data_float(p->win, "FPS", p->win->fps, 10);
 	display_data_vec2(p->win, "Rotation:", (t_vec2){p->rot.x,
 			fmod(fmod(p->rot.y, 360) + 360, 360)}, 30);
-	display_data_float(p->win, "Zoom:", p->zoom * 10, 50);
+	display_data_float(p->win, "Zoom:", p->zoom, 50);
 	display_data_vec3(p->win, "Positon:", p->pos, 70);
-	display_data_float(p->win, "Z Size:", p->z_size * 10, 90);
-	display_data_float(p->win, "Fog:", p->fog * 10, 110);
+	display_data_float(p->win, "Z Size:", p->z_size, 90);
+	display_data_float(p->win, "Fog:", p->fog, 110);
 	display_data_str(p->win, "Mode:", p->is_perspective_active ?
 			"Perspective" : "Orthogonal", 130);
 	if (p->draw_vbo == NULL)

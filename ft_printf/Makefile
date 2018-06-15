@@ -25,13 +25,11 @@ force:
 	@true
 
 %.o: %.c ft_printf.h
-	$(CC) $(FLAGS) -c $<
+	$(CC) $(FLAGS) -c $< -I ../inc
 
 $(NAME): $(LIB) $(OBJ) ft_printf.h Makefile
 	rm -fv $(NAME)
 	ar -rc $(NAME) $(OBJ)
-	libtool -static -o $(NAME) $(NAME) $(LIB) 2> /dev/null
-	ranlib $(NAME)
 
 clean:
 	@echo "Cleaning objects:"

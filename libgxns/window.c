@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 00:14:34 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/11 16:01:32 by njaber           ###   ########.fr       */
+/*   Updated: 2018/06/15 08:10:50 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	paint_window(t_win *win, t_kernel *opencl_kernel, char use_motion_blur)
 
 	time = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
 	if (++win->frame % 60 == 0)
-		win->fps = 300000000000 / (time - win->frames[0]);
+		win->fps = 30000000000 / (double)(time - win->frames[0]);
 	if (opencl_kernel == NULL)
 		mlx_clear_window(win->mlx, win->win);
 	mlx_put_image_to_window(win->mlx, win->win, win->img.link, 0, 0);
