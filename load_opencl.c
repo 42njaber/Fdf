@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 20:23:49 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/12 14:53:54 by njaber           ###   ########.fr       */
+/*   Updated: 2018/06/15 07:39:37 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,18 @@ void			create_kernel(t_ptr *p)
 	img = &p->win->img;
 	kernel->opencl = p->opencl;
 	if ((err = (build_program(p->opencl, kernel) ||
-			create_memobjs(p, p->opencl, kernel, img))) != CL_SUCCESS)
+			(err = create_memobjs(p, p->opencl, kernel, img)))) != CL_SUCCESS)
 	{
 		ft_printf("[Error] Could not build kernel program"
 				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+		if (kernel->program != NULL)
+			clReleaseProgram(kernel->program);
 		free(kernel);
 		return ;
 	}
 	clSetKernelArg(kernel->cores[0], 4, sizeof(unsigned int), &img->px_size);
 	clSetKernelArg(kernel->cores[0], 5, sizeof(unsigned int), &img->line);
-	clSetKernelArg(kernel->cores[0], 6,
-			sizeof(int[2]), (int[2]){img->size.x, img->size.y});
+	clSetKernelArg(kernel->cores[0], 6, sizeof(int[2]), &img->size);
 	clSetKernelArg(kernel->cores[0], 8,
 			sizeof(int[1]), (int[1]){p->is_perspective_active});
 	p->draw_vbo = kernel;

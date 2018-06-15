@@ -6,7 +6,7 @@
 /*   By: njaber <neyl.jaber@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 23:03:04 by njaber            #+#    #+#             */
-/*   Updated: 2018/04/12 14:30:30 by njaber           ###   ########.fr       */
+/*   Updated: 2018/06/15 07:37:41 by njaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void					draw_vbo_opencl(t_ptr *p)
 			p->win->img.buf, 1, &event, NULL)) != CL_SUCCESS)
 		ft_error("[Erreur] Echec durant la lecture du buffer"
 				"%<R>  (Error code: %<i>%2d)%<0>\n", err);
+	clReleaseEvent(event);
 }
 
 void					draw_map(t_ptr *p)
