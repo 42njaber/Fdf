@@ -8,6 +8,7 @@ Controls
 
 The controls were made for Azerty and there is no way to change them for Qwerty keyboards
 
+- ESC : exits the program
 - Arrow keys : moves the camera focus forward/backward/left/right
 - Space/Shift : moves the camera focus up/down (this control does not scale properly and should probably not be used)
 - Mouse wheel : moves the camera closer/further from its focus
